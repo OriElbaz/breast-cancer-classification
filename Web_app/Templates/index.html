@@ -19,7 +19,7 @@
             box-shadow: 0 4px 6px rgba(0,0,0,0.1);
         }
         .header-title {
-            color: #d63384; /* Pink color for breast cancer awareness */
+            color: #d63384;
             margin-bottom: 30px;
             text-align: center;
         }
@@ -38,15 +38,17 @@
             border-color: #b02a6b;
             color: white;
         }
-        .btn-random {
-            background-color: #6c757d;
-            border-color: #6c757d;
+        /* Styling for the new buttons */
+        .btn-test-malignant {
+            background-color: #dc3545; /* Red */
             color: white;
-            font-size: 1.1rem;
         }
-        .btn-random:hover {
-            background-color: #5a6268;
-            border-color: #545b62;
+        .btn-test-benign {
+            background-color: #198754; /* Green */
+            color: white;
+        }
+        .btn-random {
+            background-color: #6c757d; /* Grey */
             color: white;
         }
         .section-header {
@@ -62,113 +64,100 @@
 <div class="container">
     <h1 class="header-title">Breast Cancer Risk Predictor</h1>
     
+    {% if prediction_text %}
+    <div class="alert alert-{{ alert_type }} text-center" role="alert">
+        <h3 class="mb-0">{{ prediction_text }}</h3>
+    </div>
+    {% endif %}
+    
     <form action="/predict" method="POST">
         <div class="row">
             <div class="col-md-6">
                 <h4 class="section-header">Mean Characteristics</h4>
-                
-                <div class="mb-3">
-                    <label class="form-label">Radius (Mean)</label>
-                    <input type="number" step="any" class="form-control" name="radius_mean" required>
-                </div>
-                <div class="mb-3">
-                    <label class="form-label">Texture (Mean)</label>
-                    <input type="number" step="any" class="form-control" name="texture_mean" required>
-                </div>
-                <div class="mb-3">
-                    <label class="form-label">Perimeter (Mean)</label>
-                    <input type="number" step="any" class="form-control" name="perimeter_mean" required>
-                </div>
-                <div class="mb-3">
-                    <label class="form-label">Area (Mean)</label>
-                    <input type="number" step="any" class="form-control" name="area_mean" required>
-                </div>
-                <div class="mb-3">
-                    <label class="form-label">Smoothness (Mean)</label>
-                    <input type="number" step="any" class="form-control" name="smoothness_mean" required>
-                </div>
-                <div class="mb-3">
-                    <label class="form-label">Compactness (Mean)</label>
-                    <input type="number" step="any" class="form-control" name="compactness_mean" required>
-                </div>
-                <div class="mb-3">
-                    <label class="form-label">Concavity (Mean)</label>
-                    <input type="number" step="any" class="form-control" name="concavity_mean" required>
-                </div>
-                <div class="mb-3">
-                    <label class="form-label">Concave Points (Mean)</label>
-                    <input type="number" step="any" class="form-control" name="concave_points_mean" required>
-                </div>
-                <div class="mb-3">
-                    <label class="form-label">Symmetry (Mean)</label>
-                    <input type="number" step="any" class="form-control" name="symmetry_mean" required>
-                </div>
-                <div class="mb-3">
-                    <label class="form-label">Fractal Dimension (Mean)</label>
-                    <input type="number" step="any" class="form-control" name="fractal_dimension_mean" required>
-                </div>
+                <div class="mb-3"><label class="form-label">Radius (Mean)</label><input type="number" step="any" class="form-control" name="radius_mean" required></div>
+                <div class="mb-3"><label class="form-label">Texture (Mean)</label><input type="number" step="any" class="form-control" name="texture_mean" required></div>
+                <div class="mb-3"><label class="form-label">Perimeter (Mean)</label><input type="number" step="any" class="form-control" name="perimeter_mean" required></div>
+                <div class="mb-3"><label class="form-label">Area (Mean)</label><input type="number" step="any" class="form-control" name="area_mean" required></div>
+                <div class="mb-3"><label class="form-label">Smoothness (Mean)</label><input type="number" step="any" class="form-control" name="smoothness_mean" required></div>
+                <div class="mb-3"><label class="form-label">Compactness (Mean)</label><input type="number" step="any" class="form-control" name="compactness_mean" required></div>
+                <div class="mb-3"><label class="form-label">Concavity (Mean)</label><input type="number" step="any" class="form-control" name="concavity_mean" required></div>
+                <div class="mb-3"><label class="form-label">Concave Points (Mean)</label><input type="number" step="any" class="form-control" name="concave_points_mean" required></div>
+                <div class="mb-3"><label class="form-label">Symmetry (Mean)</label><input type="number" step="any" class="form-control" name="symmetry_mean" required></div>
+                <div class="mb-3"><label class="form-label">Fractal Dimension (Mean)</label><input type="number" step="any" class="form-control" name="fractal_dimension_mean" required></div>
             </div>
 
             <div class="col-md-6">
                 <h4 class="section-header">Standard Error (SE)</h4>
-                
-                <div class="mb-3">
-                    <label class="form-label">Radius (SE)</label>
-                    <input type="number" step="any" class="form-control" name="radius_se" required>
-                </div>
-                <div class="mb-3">
-                    <label class="form-label">Texture (SE)</label>
-                    <input type="number" step="any" class="form-control" name="texture_se" required>
-                </div>
-                <div class="mb-3">
-                    <label class="form-label">Perimeter (SE)</label>
-                    <input type="number" step="any" class="form-control" name="perimeter_se" required>
-                </div>
-                <div class="mb-3">
-                    <label class="form-label">Area (SE)</label>
-                    <input type="number" step="any" class="form-control" name="area_se" required>
-                </div>
-                <div class="mb-3">
-                    <label class="form-label">Smoothness (SE)</label>
-                    <input type="number" step="any" class="form-control" name="smoothness_se" required>
-                </div>
-                <div class="mb-3">
-                    <label class="form-label">Compactness (SE)</label>
-                    <input type="number" step="any" class="form-control" name="compactness_se" required>
-                </div>
-                <div class="mb-3">
-                    <label class="form-label">Concavity (SE)</label>
-                    <input type="number" step="any" class="form-control" name="concavity_se" required>
-                </div>
-                <div class="mb-3">
-                    <label class="form-label">Concave Points (SE)</label>
-                    <input type="number" step="any" class="form-control" name="concave_points_se" required>
-                </div>
-                <div class="mb-3">
-                    <label class="form-label">Symmetry (SE)</label>
-                    <input type="number" step="any" class="form-control" name="symmetry_se" required>
-                </div>
-                <div class="mb-3">
-                    <label class="form-label">Fractal Dimension (SE)</label>
-                    <input type="number" step="any" class="form-control" name="fractal_dimension_se" required>
-                </div>
+                <div class="mb-3"><label class="form-label">Radius (SE)</label><input type="number" step="any" class="form-control" name="radius_se" required></div>
+                <div class="mb-3"><label class="form-label">Texture (SE)</label><input type="number" step="any" class="form-control" name="texture_se" required></div>
+                <div class="mb-3"><label class="form-label">Perimeter (SE)</label><input type="number" step="any" class="form-control" name="perimeter_se" required></div>
+                <div class="mb-3"><label class="form-label">Area (SE)</label><input type="number" step="any" class="form-control" name="area_se" required></div>
+                <div class="mb-3"><label class="form-label">Smoothness (SE)</label><input type="number" step="any" class="form-control" name="smoothness_se" required></div>
+                <div class="mb-3"><label class="form-label">Compactness (SE)</label><input type="number" step="any" class="form-control" name="compactness_se" required></div>
+                <div class="mb-3"><label class="form-label">Concavity (SE)</label><input type="number" step="any" class="form-control" name="concavity_se" required></div>
+                <div class="mb-3"><label class="form-label">Concave Points (SE)</label><input type="number" step="any" class="form-control" name="concave_points_se" required></div>
+                <div class="mb-3"><label class="form-label">Symmetry (SE)</label><input type="number" step="any" class="form-control" name="symmetry_se" required></div>
+                <div class="mb-3"><label class="form-label">Fractal Dimension (SE)</label><input type="number" step="any" class="form-control" name="fractal_dimension_se" required></div>
             </div>
         </div>
 
-        <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
-            <button type="button" class="btn btn-random me-md-2" onclick="fillRandomData()">Auto-Fill Random Data</button>
-            <button type="submit" class="btn btn-predict flex-grow-1">Predict Diagnosis</button>
+        <div class="row mt-4">
+            <div class="col-md-8 d-flex gap-2">
+                <button type="button" class="btn btn-test-benign" onclick="fillBenign()">Test Benign Case</button>
+                <button type="button" class="btn btn-test-malignant" onclick="fillMalignant()">Test Malignant Case</button>
+                <button type="button" class="btn btn-random" onclick="fillRandomData()">Random Data</button>
+            </div>
+            <div class="col-md-4">
+                <button type="submit" class="btn btn-predict w-100">Predict Diagnosis</button>
+            </div>
         </div>
     </form>
 </div>
 
 <script>
+    function setValues(data) {
+        const fields = [
+            'radius_mean', 'texture_mean', 'perimeter_mean', 'area_mean', 'smoothness_mean',
+            'compactness_mean', 'concavity_mean', 'concave_points_mean', 'symmetry_mean', 'fractal_dimension_mean',
+            'radius_se', 'texture_se', 'perimeter_se', 'area_se', 'smoothness_se',
+            'compactness_se', 'concavity_se', 'concave_points_se', 'symmetry_se', 'fractal_dimension_se'
+        ];
+        
+        fields.forEach((field, index) => {
+            document.getElementsByName(field)[0].value = data[index];
+        });
+    }
+
+    function fillMalignant() {
+        // High values typically associated with Malignant tumors
+        // Based on dataset averages for Malignant class
+        const malignantData = [
+            20.57, 27.77, 132.9, 1326.0, 0.10, 
+            0.16, 0.18, 0.15, 0.23, 0.07,
+            0.85, 2.0, 5.0, 70.0, 0.009, 
+            0.04, 0.06, 0.02, 0.02, 0.005
+        ];
+        setValues(malignantData);
+    }
+
+    function fillBenign() {
+        // Low values typically associated with Benign tumors
+        // Based on dataset averages for Benign class
+        const benignData = [
+            11.00, 15.00, 75.00, 420.0, 0.08, 
+            0.05, 0.03, 0.02, 0.16, 0.06,
+            0.3, 1.0, 2.0, 20.0, 0.006, 
+            0.02, 0.02, 0.01, 0.015, 0.003
+        ];
+        setValues(benignData);
+    }
+
     function getRandom(min, max) {
         return (Math.random() * (max - min) + min).toFixed(4);
     }
 
     function fillRandomData() {
-        // Mean values (Approximate realistic ranges)
+        // Generates random values within a realistic range
         document.getElementsByName('radius_mean')[0].value = getRandom(10, 25);
         document.getElementsByName('texture_mean')[0].value = getRandom(10, 30);
         document.getElementsByName('perimeter_mean')[0].value = getRandom(50, 180);
@@ -180,7 +169,6 @@
         document.getElementsByName('symmetry_mean')[0].value = getRandom(0.15, 0.3);
         document.getElementsByName('fractal_dimension_mean')[0].value = getRandom(0.05, 0.09);
 
-        // SE values (Usually smaller)
         document.getElementsByName('radius_se')[0].value = getRandom(0.1, 1.0);
         document.getElementsByName('texture_se')[0].value = getRandom(0.3, 2.0);
         document.getElementsByName('perimeter_se')[0].value = getRandom(1.0, 10.0);
